@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="layout :: head">
+</head>
+
+<body>
+<div th:include="layout :: navigationPanel"></div>
+
+<div class="content">
+    <div th:switch="${edit}">
+        <h1 th:case="true">EDYTUJ KURS</h1>
+        <h1 th:case="*">DODAJ NOWY KURS</h1>
+    </div>
+    <div class="error" th:if="${(param.error != null)}" th:text="${param.error}"></div>
+
+<form th:action="@{${action}}" method="POST" th:object="${course}">
+    <table>
+        <tr>
+            <td>NAZWA KURSU</td>
+            <td><input type="text" th:field="*{name}" th:value="${course.name}" required="true"/></td>
+        </tr>
+        <tr>
+            <td>OPIS</td>
+            <td><input type="text" th:field="*{description}" th:value="${course.description}"/></td>
+        </tr>
+        <tr><td colspan="2">
+            <div th:switch="${edit}">
+                <button type="submit" th:case="true" style="width:100%">EDYTUJ KURS</button>
+                <button type="submit" th:case="*" style="width:100%">DODAJ KURS</button>
+            </div>
+             </td></tr>
+    </table>
+</form>
+</div>
+
+<div th:include="layout :: footer"></div>
+</body>
+</html>

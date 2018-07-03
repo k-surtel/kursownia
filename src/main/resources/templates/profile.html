@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:include="layout :: head">
+    </head>
+
+    <body>
+        <div th:include="layout :: navigationPanel"></div>
+
+        <div class="content">
+        <h1 th:text="'PROFIL UŻYTKOWNIKA ' + ${#strings.toUpperCase(user.name)} + ' ' + ${#strings.toUpperCase(user.surname)}"></h1>
+
+            <a th:href="@{/edit_profile}">EDYTUJ  PROFIL</a>
+            <a th:href="@{/new_course}">DODAJ NOWY KURS</a>
+
+            <br />
+
+                <div th:if="${user.subbedCourses != null}" id="left_profile">
+                    <h2>ZASUBSKRYBOWANE KURSY</h2>
+                    <ul th:each="course, stat : ${user.subbedCourses}">
+                        <li><div class="course">
+                            <a th:href="@{/courses/} + ${course.idCourse}" th:text="${course.name}"></a>
+                            <p th:text="${course.description}"></p>
+                        </div></li>
+                    </ul>
+                </div>
+
+
+                <div th:if="${user.myCourses != null}" id="right_profile">
+                    <h2>MOJE KURSY</h2>
+                    <ul th:each="course, stat : ${user.myCourses}">
+                        <li><div class="course">
+                            <a th:href="@{/courses/} + ${course.idCourse}" th:text="${course.name}"></a>
+                            <p th:text="${course.description}"></p>
+                        </div></li>
+                    </ul>
+                </div>
+
+
+
+
+
+
+
+
+
+        </div>
+
+        <div th:include="layout :: footer"></div>
+    </body>
+</html>

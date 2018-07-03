@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="layout :: head"></head>
+<body>
+<div th:include="layout :: navigationPanel"></div>
+<div class="content">
+
+    <h1 th:text="${course.name}"></h1>
+    <h2 th:text="'AUTOR: ' + ${author.name}"></h2>
+    <div th:text="${course.description}"></div>
+    <br />
+
+    <div sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername()} != ${author.login}">
+
+        <form th:if="${!#lists.contains(subbednames, #authentication.getPrincipal().getUsername())}"
+              th:action="@{/courses/}+${course.idCourse}+@{/apply}" method="POST" th:object="${course}">
+            <button type="submit" onclick="return confirm('Czy chcesz się zapisać na ten kurs?');">ZAPISZ SIĘ DO KURSU
+            </button>
+        </form>
+
+        <form th:if="${#lists.contains(subbednames, #authentication.getPrincipal().getUsername())}"
+              th:action="@{/courses/}+${course.idCourse}+@{/unsub}" method="POST" th:object="${course}">
+            <button type="submit" onclick="return confirm('Czy napewno chcesz zrezygnować z kursu?');">WYPISZ SIĘ Z KURSU</button>
+        </form>
+
+    </div>
+
+    <div sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername()} == ${author.login}">
+
+        <table><tr>
+            <td>
+                <form th:action="@{/courses/}+${course.idCourse}+@{/update}" method="GET" th:object="${course}">
+                    <button type="submit">EDYTUJ KURS</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/courses/}+${course.idCourse}+@{/delete}" method="POST" th:object="${course}">
+                    <button type="submit" onclick="return confirm('Czy napewno chcesz usunąć Twój kurs?');">USUŃ KURS</button>
+                </form>
+            </td>
+        </tr></table>
+
+    </div>
+</div>
+
+<div th:include="layout :: footer"></div>
+
+</body>
+</html>

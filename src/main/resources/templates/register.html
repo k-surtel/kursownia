@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:include="layout :: head">
+    </head>
+
+    <body>
+        <div th:include="layout :: navigationPanel"></div>
+        <div class="content">
+            <div class="error" th:if="${(param.error != null)}" th:text="${param.error}"></div>
+            <div th:switch="${edit}">
+                <h1 th:case="true">EDYTUJ PROFIL</h1>
+                <h1 th:case="*">REJESTRACJA</h1>
+            </div>
+
+        <form th:action="@{${action}}" method="POST" th:object="${user}">
+            <table>
+                <tr>
+                    <td>IMIĘ</td>
+                    <td><input type="text" th:field="*{name}" th:value="${user.name}" required="true"/></td>
+                </tr>
+                <tr>
+                    <td>NAZWISKO</td>
+                    <td><input type="text" th:field="*{surname}" th:value="${user.surname}"/></td>
+                </tr>
+                <tr>
+                    <td>LOGIN</td>
+                    <td><input type="text" th:field="*{login}" th:value="${user.login}" required="true"/></td>
+                </tr>
+                <tr>
+                    <td>HASŁO</td>
+                    <td><input type="password" th:field="*{password}" th:value="${user.password}" required="true"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div th:switch="${edit}">
+                            <button type="submit" th:case="true" style="width:100%">ZAPISZ ZMIANY</button>
+                            <button type="submit"  th:case="*" style="width:100%">ZAREJESTRUJ SIĘ</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+            <br />
+            <form th:action="@{/delete_user}" method="POST" th:if="${edit}">
+                <button type="submit" onclick="return confirm('Czy napewno chcesz usunąć konto?');">USUŃ KONTO</button>
+            </form>
+
+        </div>
+        <div th:include="layout :: footer"></div>
+    </body>
+</html>
